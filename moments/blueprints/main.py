@@ -9,6 +9,7 @@ from moments.forms.main import CommentForm, DescriptionForm, TagForm
 from moments.models import Collection, Comment, Follow, Notification, Photo, Tag, User
 from moments.notifications import push_collect_notification, push_comment_notification
 from moments.utils import flash_errors, redirect_back, rename_image, resize_image, validate_image
+from moments.azure import AzureVision
 
 main_bp = Blueprint('main', __name__)
 
@@ -130,11 +131,16 @@ def upload():
         if not validate_image(f.filename):
             return 'Invalid image.', 400
         filename = rename_image(f.filename)
-        f.save(current_app.config['MOMENTS_UPLOAD_PATH'] / filename)
+        filepath = current_app.config['MOMENTS_UPLOAD_PATH'] / filename
+        f.save(filepath)
         filename_s = resize_image(f, filename, current_app.config['MOMENTS_PHOTO_SIZES']['small'])
         filename_m = resize_image(f, filename, current_app.config['MOMENTS_PHOTO_SIZES']['medium'])
+        with open(filepath, 'rb') as f:
+            data = f.read()
+        alt_text = AzureVision().get_alt_text(image=data)
         photo = Photo(
-            filename=filename, filename_s=filename_s, filename_m=filename_m, author=current_user._get_current_object()
+            filename=filename, filename_s=filename_s, filename_m=filename_m, author=current_user._get_current_object(),
+            alt_text=alt_text
         )
         db.session.add(photo)
         db.session.commit()

@@ -291,6 +291,7 @@ class Photo(db.Model):
     created_at: Mapped[datetime] = mapped_column(default=lambda: datetime.now(timezone.utc), index=True)
     can_comment: Mapped[bool] = mapped_column(default=True)
     flag: Mapped[int] = mapped_column(default=0)
+    alt_text: Mapped[str] = mapped_column(String(64))
 
     author_id: Mapped[int] = mapped_column(ForeignKey('user.id', ondelete='CASCADE'))
 
