@@ -16,3 +16,7 @@ class TagForm(FlaskForm):
 class CommentForm(FlaskForm):
     body = TextAreaField('', validators=[DataRequired()])
     submit = SubmitField()
+
+class AltTextForm(FlaskForm):
+    alt_text = TextAreaField('Edit Alt Text', validators=[Optional(), Length(0, 500)])
+    submit = SubmitField()

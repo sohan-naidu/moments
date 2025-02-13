@@ -255,7 +255,8 @@ footer {
 
 /* Photo Page */
 #tag-form,
-#description-form {
+#description-form,
+#alt-text-form {
   display: none;
   margin: 20px 0;
 }

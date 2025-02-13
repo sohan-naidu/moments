@@ -93,6 +93,28 @@
       {% endfor %}
       {% endif %}
     </div>
+  {% if current_user == photo.author %}
+    <div id="alt-text">
+      <p>
+        {% if photo.alt_text %}
+        {{ photo.alt_text }}
+        {% else %}
+        <small class="text-muted">No alt text</small>
+        {% endif %}
+        <a id="alt-text-btn" href="#!">
+          <small>{{ render_icon('pencil-fill') }}</small>
+        </a>
+      </p>
+    </div>
+    <div id="alt-text-form">
+      <form action="{{ url_for('.edit_alt_text', photo_id=photo.id) }}" method="post">
+        {{ alt_text_form.csrf_token }}
+        {{ render_field(alt_text_form.alt_text) }}
+        <a class="btn btn-light btn-sm" id="cancel-alt-text">Cancel</a>
+        {{ render_field(alt_text_form.submit, class='btn-success btn-sm alt-text-submit-btn') }}
+      </form>
+    </div>
+  {% endif %}
     {% endif %}
     {% if photo.collections %}
     <a class="text-decoration-none" href="{{ url_for('main.show_collectors', photo_id=photo.id) }}">{{ photo.collectors_count }}

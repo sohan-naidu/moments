@@ -275,6 +275,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+
+  const altTextBtn = document.getElementById('alt-text-btn');
+  const cancelAltTextBtn = document.getElementById('cancel-alt-text');
+  const altText = document.getElementById('alt-text');
+  const altTextForm = document.getElementById('alt-text-form');
+
+  if (altTextBtn) {
+    altTextBtn.addEventListener('click', () => {
+      altText.style.display = 'none';
+      altTextForm.style.display = 'block';
+    });
+  }
+
+  if (cancelAltTextBtn) {
+    cancelAltTextBtn.addEventListener('click', () => {
+      altTextForm.style.display = 'none';
+      altText.style.display = 'block';
+    });
+  }
+
   const deleteModal = document.getElementById('delete-modal');
   const deleteForm = document.querySelector('.delete-form');
 

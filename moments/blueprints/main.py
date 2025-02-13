@@ -5,7 +5,7 @@ from sqlalchemy.orm import with_parent
 
 from moments.core.extensions import db
 from moments.decorators import confirm_required, permission_required
-from moments.forms.main import CommentForm, DescriptionForm, TagForm
+from moments.forms.main import CommentForm, DescriptionForm, TagForm, AltTextForm
 from moments.models import Collection, Comment, Follow, Notification, Photo, Tag, User
 from moments.notifications import push_collect_notification, push_comment_notification
 from moments.utils import flash_errors, redirect_back, rename_image, resize_image, validate_image
@@ -160,8 +160,11 @@ def show_photo(photo_id):
     comment_form = CommentForm()
     description_form = DescriptionForm()
     tag_form = TagForm()
+    alt_text_form = AltTextForm()
 
     description_form.description.data = photo.description
+    alt_text_form.alt_text.data = photo.alt_text
+
     return render_template(
         'main/photo.html',
         photo=photo,
@@ -170,6 +173,7 @@ def show_photo(photo_id):
         tag_form=tag_form,
         pagination=pagination,
         comments=comments,
+        alt_text_form=alt_text_form,
     )
 
 
@@ -279,6 +283,23 @@ def edit_description(photo_id):
         photo.description = form.description.data
         db.session.commit()
         flash('Description updated.', 'success')
+
+    flash_errors(form)
+    return redirect(url_for('.show_photo', photo_id=photo_id))
+
+
+@main_bp.route('/photo/<int:photo_id>/alt_text', methods=['POST'])
+@login_required
+def edit_alt_text(photo_id):
+    photo = db.session.get(Photo, photo_id) or abort(404)
+    if current_user != photo.author and not current_user.can('MODERATE'):
+        abort(403)
+
+    form = AltTextForm()
+    if form.validate_on_submit():
+        photo.alt_text = form.alt_text.data
+        db.session.commit()
+        flash('Alt text updated.', 'success')
 
     flash_errors(form)
     return redirect(url_for('.show_photo', photo_id=photo_id))
