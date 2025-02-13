@@ -88,6 +88,7 @@ def fake_photo(count=30):
             filename_s=filename,
             author=user,
             created_at=fake.date_time_this_year(),
+            alt_text=fake.text(),
         )
         db.session.add(photo)
 

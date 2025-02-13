@@ -15,7 +15,7 @@ class AzureVision:
             )
         return cls._instance
 
-    def get_alt_text(self, image):
+    def get_alt_text(self, image: bytes):
         result = self.client.analyze(
             image_data=image,
             visual_features=[VisualFeatures.CAPTION]
