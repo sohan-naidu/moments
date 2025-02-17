@@ -1,54 +1,24 @@
-# Moments
+# Instructions
 
-A photo sharing social networking app built with Python and Flask. The example application for the book *[Python Web Development with Flask (2nd edition)](https://helloflask.com/en/book/4)* (《[Flask Web 开发实战（第 2 版）](https://helloflask.com/book/4)》).
+Please create a Computer Vision instance in Azure [here](https://portal.azure.com/#view/Microsoft_Azure_Marketplace/GalleryItemDetailsBladeNopdl/id/Microsoft.CognitiveServicesComputerVision/selectionMode~/false/resourceGroupId//resourceGroupLocation//dontDiscardJourney~/false/selectedMenuId/home/launchingContext~/%7B%22galleryItemId%22%3A%22Microsoft.CognitiveServicesComputerVision%22%2C%22source%22%3A%5B%22GalleryFeaturedMenuItemPart%22%2C%22VirtualizedTileDetails%22%5D%2C%22menuItemId%22%3A%22home%22%2C%22subMenuItemId%22%3A%22Search%20results%22%2C%22telemetryId%22%3A%22b205967c-15d1-4ea5-b073-9b345fde6376%22%7D/searchTelemetryId/2a76201f-0545-454b-8e60-27db7be54ad4)
 
-Demo: http://moments.helloflask.com
+Then update .env:
 
-![Screenshot](demo.png)
+    AZURE_VISION_API_ENDPOINT = "<your-api-endpoint>"
+    AZURE_VISION_API_KEY = "<your-api-token>"
 
-## Installation
-
-Clone the repo:
-
-```
-$ git clone https://github.com/greyli/moments
-$ cd moments
-```
-
-Install dependencies with [PDM](https://pdm.fming.dev):
+Once a virtual environment has been created, run the following commands:
 
 ```
-$ pdm install
-```
-
-> [!TIP]
-> If you don't have PDM installed, you can create a virtual environment with `venv` and install dependencies with `pip install -r requirements.txt`.
-
-To initialize the app, run the `flask init-app` command:
-
-```
-$ pdm run flask init-app
-```
-
-If you just want to try it out, generate fake data with `flask lorem` command then run the app:
-
-```
-$ pdm run flask lorem
+pip install -r requirements.txt
+flask init-db
+flask lorem
+flask run
 ```
 
 It will create a test account:
 
-* email: `admin@helloflask.com`
-* password: `moments`
+    email: admin@helloflask.com
+    password: moments
 
-Now you can run the app:
-
-```
-$ pdm run flask run
-* Running on http://127.0.0.1:5000/
-```
-
-## License
-
-This project is licensed under the MIT License (see the
-[LICENSE](LICENSE) file for details).
+This account can be used for testing both the features.
