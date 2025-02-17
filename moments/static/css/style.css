@@ -260,3 +260,21 @@ footer {
   display: none;
   margin: 20px 0;
 }
+
+#tags {
+    max-height: 90px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-right: 5px;
+}
+
+#tags::-webkit-scrollbar {
+    width: 6px;
+}
+
+#tags::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
