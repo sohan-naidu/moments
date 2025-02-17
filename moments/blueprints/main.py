@@ -118,6 +118,17 @@ def get_image(filename):
 def get_avatar(filename):
     return send_from_directory(current_app.config['AVATARS_SAVE_PATH'], filename)
 
+def _add_tags(photo, tags: []):
+    for name in tags:
+        tag = db.session.scalar(select(Tag).filter_by(name=name))
+        if tag is None:
+            tag = Tag(name=name)
+            db.session.add(tag)
+            db.session.commit()
+        if tag not in photo.tags:
+            photo.tags.append(tag)
+            db.session.commit()
+
 
 @main_bp.route('/upload', methods=['GET', 'POST'])
 @login_required
@@ -144,6 +155,8 @@ def upload():
         )
         db.session.add(photo)
         db.session.commit()
+        tags = AzureVision().get_tags(data)
+        _add_tags(photo, tags)
     return render_template('main/upload.html')
 
 
@@ -341,15 +354,7 @@ def new_tag(photo_id):
 
     form = TagForm()
     if form.validate_on_submit():
-        for name in form.tag.data.split():
-            tag = db.session.scalar(select(Tag).filter_by(name=name))
-            if tag is None:
-                tag = Tag(name=name)
-                db.session.add(tag)
-                db.session.commit()
-            if tag not in photo.tags:
-                photo.tags.append(tag)
-                db.session.commit()
+        _add_tags(photo, form.tag.data.split())
         flash('Tag added.', 'success')
 
     flash_errors(form)

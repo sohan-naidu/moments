@@ -22,3 +22,11 @@ class AzureVision:
         )
 
         return result.caption.text if result.caption else ""
+
+    def get_tags(self, image: bytes):
+        result = self.client.analyze(
+            image_data=image,
+            visual_features=[VisualFeatures.TAGS]
+        )
+
+        return [value.get("name", "") for value in result.get("tagsResult", {}).get("values", [])]
